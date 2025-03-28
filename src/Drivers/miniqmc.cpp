@@ -186,9 +186,9 @@ int main(int argc, char** argv)
 
   // use the global generator
 
-  int na     = 1;
-  int nb     = 1;
-  int nc     = 1;
+  int na     = 4;
+  int nb     = 2;
+  int nc     = 2;
   int nsteps = 5;
   int nx = 37, ny = 37, nz = 37;
   int nmovers = omp_get_max_threads();
@@ -199,7 +199,7 @@ int main(int argc, char** argv)
   // Set cutoff for NLPP use.
   RealType Rmax(1.7);
   RealType accept = 0.5;
-  int delay_rank  = 32;
+  int delay_rank  = 64;
   bool useRef     = false;
   bool enableJ3   = false;
 
