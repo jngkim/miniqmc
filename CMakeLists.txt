@@ -419,16 +419,45 @@ endif(QMC_ENABLE_ROCM)
 if(QMC_ENABLE_SYCL)
   # require 3.20 to recognize IntelLLVM compiler ID and check accurate version numbers.
   if(CMAKE_VERSION VERSION_LESS 3.20.0)
-    message(FATAL_ERROR "QMC_ENABLE_SYCL require CMake 3.20.0 or later")
+    message(FATAL_ERROR "ENABLE_SYCL require CMake 3.20.0 or later")
   endif()
   if(NOT CMAKE_CXX_COMPILER_ID MATCHES "IntelLLVM")
     message(FATAL_ERROR "QMCPACK only supports SYCL with LLVM-based Intel compiler (icpx).")
   endif()
+
   add_library(SYCL::host INTERFACE IMPORTED)
   add_library(SYCL::device INTERFACE IMPORTED)
-  find_package(IntelDPCPP REQUIRED CONFIGS IntelDPCPPConfig-modified.cmake PATHS ${PROJECT_CMAKE})
-  target_link_libraries(SYCL::host INTERFACE OneAPI::DPCPP-host)
-  target_link_libraries(SYCL::device INTERFACE OneAPI::DPCPP-device)
+
+  find_path(
+    SYCL_INCLUDE_DIR sycl/sycl.hpp
+    PATH_SUFFIXES include)
+
+  find_library(
+    SYCL_LIBRARY
+    NAMES
+    sycl
+    PATH_SUFFIXES
+    lib lib64
+  )
+
+  if(SYCL_INCLUDE_DIR AND SYCL_LIBRARY)
+
+    set(SYCL_FLAGS -fsycl)
+    message(STATUS "SYCL_INCLUDE_DIR: ${SYCL_INCLUDE_DIR}")
+    message(STATUS "SYCL_LIBRARY: ${SYCL_LIBRARY}")
+
+    target_compile_options(SYCL::device INTERFACE ${SYCL_FLAGS})
+    target_link_options(SYCL::device INTERFACE ${SYCL_FLAGS})
+
+    target_include_directories(SYCL::host INTERFACE "${SYCL_INCLUDE_DIR}/sycl;${SYCL_INCLUDE_DIR}")
+    target_link_libraries(SYCL::host INTERFACE "${SYCL_LIBRARY}")
+
+    if(TARGET MKL::sycl)
+      target_link_libraries(MKL::sycl INTERFACE ${SYCL_LIBRARY})
+    endif()
+  else()
+    message(FATAL_ERROR "SYCL library not found. Set SYCL_INCLUDE_DIR and SYCL_LIBRARY")
+  endif()
 endif(QMC_ENABLE_SYCL)
 
 #-------------------------------------------------------------------

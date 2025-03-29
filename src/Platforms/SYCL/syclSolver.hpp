@@ -9,22 +9,17 @@
 // File created by: Ye Luo, yeluo@anl.gov, Argonne National Laboratory
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef QMCPLUSPLUS_SYCL_RUNTIME_H
-#define QMCPLUSPLUS_SYCL_RUNTIME_H
+#ifndef QMCPLUSPLUS_SYCL_MKL_SOLVER_H
+#define QMCPLUSPLUS_SYCL_MKL_SOLVER_H
 
-#include <sycl/sycl.hpp>
+#include "oneapi/mkl/lapack.hpp"
 
 namespace qmcplusplus
 {
-/// return a reference to the per-device default queue
-sycl::queue& getSYCLDefaultDeviceDefaultQueue();
-/// create an in-order queue using the default device
-sycl::queue createSYCLInOrderQueueOnDefaultDevice();
-/// create a out-of-order queue using the default device
-sycl::queue createSYCLQueueOnDefaultDevice();
-/// query free memory on the default device
-size_t getSYCLdeviceFreeMem();
-
+namespace syclSolver
+{
+using namespace oneapi::mkl::lapack;
+}
 } // namespace qmcplusplus
 
 #endif

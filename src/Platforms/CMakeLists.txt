@@ -61,6 +61,7 @@ endif(QMC_ENABLE_ROCM)
 if(QMC_ENABLE_SYCL)
   add_subdirectory(SYCL)
   target_link_libraries(platform_runtime PUBLIC platform_sycl_runtime)
+  target_link_libraries(platform_LA INTERFACE platform_sycl_LA)
 endif(QMC_ENABLE_SYCL)
 
 if(BUILD_UNIT_TESTS)
