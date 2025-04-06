@@ -38,6 +38,7 @@ class syclSolverInverter
   std::int64_t getrf_ws = 0;
   std::int64_t getri_ws = 0;
 
+public:
   /** resize the internal storage
    * @param norb number of electrons/orbitals
    * @param delay, maximum delay 0<delay<=norb
@@ -54,7 +55,6 @@ class syclSolverInverter
     }
   }
 
-public:
   /** compute the inverse of the transpose of matrix A and its determinant value in log
    * when T_FP and TMAT are the same
    * @tparam TREAL real type

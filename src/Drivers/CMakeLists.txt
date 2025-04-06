@@ -21,4 +21,12 @@ foreach(p ${DRIVERS})
   install(TARGETS ${p} RUNTIME DESTINATION bin)
 endforeach(p)
 
+if(QMC_ENABLE_SYCL)
+  set(p sycl_solver)
+  add_executable(${p} ${p}.cpp)
+  target_link_libraries(${p} qmcwfs qmcparticle qmcutil platform_runtime ${QMC_UTIL_LIBS})
+  set_target_properties(${p} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${miniqmc_BINARY_DIR}/bin)
+  install(TARGETS ${p} RUNTIME DESTINATION bin)
+endif()
+
 subdirs(tests)

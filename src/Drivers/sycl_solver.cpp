@@ -223,8 +223,8 @@ void debug_inverse_mpi(Communicate& comm, const std::int64_t M, int niters)
 
 int main(int argc, char* argv[])
 {
-  int blocks=1;
-  int steps=2;
+  int blocks=2;
+  int steps=5;
   int seq_id=0;
 
   int M = 3072;
